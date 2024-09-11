@@ -1,5 +1,7 @@
 name: Test Node.js application
 on:
+  merge_group:
+  pull_request:
   push:
     branches:
       - main
