@@ -16,6 +16,7 @@
   <a href="#-run-locally"><strong>Run Locally</strong></a> ·
   <a href="#white_check_mark-requirements"><strong>Requirements</strong></a> ·
   <a href="#-license"><strong>License</strong></a>
+  <a href="#-Testing"><strong>Testing</strong></a>
 </p>
 <br/>
 
@@ -229,8 +230,23 @@ Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) an
 
 <br/>
 
+## 🧪 Testing
+
+To run the project linter, run:
+
+```bash
+  npm run lint
+```
+
+To run the jest test suite, run:
+
+```bash
+  npm test
+```
+
 ## 📝 License
 
 [MIT](https://github.com/Th3Wall/Fakeflix/blob/main/LICENSE)
 
 <br/>
+
