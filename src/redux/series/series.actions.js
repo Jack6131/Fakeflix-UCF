@@ -1,18 +1,17 @@
 import axios from '../../axiosInstance';
 import { seriesActionTypes } from './series.types';
-const { REACT_APP_API_KEY } = process.env;
 
 
-async function mapActorsToTV(id){
-	//console.log(id)
-	const castResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${REACT_APP_API_KEY}`);
-    if(!castResponse.ok){
-		return []
-	}
-    const cast = await castResponse.json();
-	return cast.cast
-}
+
 	
+
+/*
+	we mapped tv media types to all of the fetches because ids are only unique for what catergory they are in ie movie or tv show
+	so for movie actions they need media_type "movie"
+
+	
+*/
+
 // Netflix
 export const fetchNetflixSeriesRequest = () => ({
     type: seriesActionTypes.FETCH_NETFLIX_SERIES_REQUEST
@@ -38,7 +37,7 @@ export const fetchNetflixSeriesAsync = (fetchUrl, isPage) => {
                 const netflixSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchNetflixSeriesSuccess(netflixSeries, isPage));

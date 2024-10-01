@@ -15,6 +15,8 @@ export const TADUM_SOUND_URL = `${GITHUB_ASSETS_BASE_URL}/Fakeflix_TaDum.mp3`;
 const ONEMONTHAGO = getOneMonthAgoReleaseDate();
 const { REACT_APP_API_KEY } = process.env;
 
+
+
 const requests = {
 	fetchSearchQuery: `/search/multi?api_key=${REACT_APP_API_KEY}&language=${LANG}&query=`,
 	fetchTrendingAll: `/trending/all/week?api_key=${REACT_APP_API_KEY}&sort_by=popularity.desc&language=${LANG}`,
