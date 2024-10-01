@@ -19,8 +19,13 @@ const DetailModal = () => {
 	const modalClosed = useSelector(selectModalState);
 	const modalContent = useSelector(selectModalContent);
 	const handleModalClose = () => dispatch(hideModalDetail());
-	const { overview, fallbackTitle, backdrop_path, release_date, first_air_date, vote_average, original_language, adult, genresConverted, isFavourite } = modalContent;
+	const { overview, fallbackTitle, backdrop_path, release_date, first_air_date, vote_average, original_language, adult, genresConverted, isFavourite,actors} = modalContent;
 	const joinedGenres = genresConverted ? genresConverted.join(', ') : "Not available";
+
+	//Maps the first 3 Actors in the Movie/TV Show to be displayed on modal
+	const actorNames = (actors && actors.length > 0) ? actors.slice(0, 3).map(actor => actor.name).join(', ') : 'No actors available';
+
+
 	const maturityRating = adult === undefined ? "Not available" : adult ? "Suitable for adults only" : "Suitable for all ages";
 	const reducedDate = release_date ? dateToYearOnly(release_date) : first_air_date ? dateToYearOnly(first_air_date) : "Not Available";
 	const modalRef = useRef();
@@ -121,6 +126,12 @@ const DetailModal = () => {
 									<span className='Modal__info--row-label'>Age classification: </span>
 									<span className="Modal__info--row-description">{maturityRating}</span>
 								</motion.div>
+								<motion.div variants={modalFadeInUpVariants} className="Modal__info--row">
+									<span className='Modal__info--row-label'>Actors: </span>
+									<span className="Modal__info--row-description">{actorNames}</span>
+								</motion.div>
+								
+							
 							</motion.div>
 						</motion.div>
 					</motion.div>

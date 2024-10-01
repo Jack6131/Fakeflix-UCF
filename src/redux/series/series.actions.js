@@ -1,6 +1,18 @@
 import axios from '../../axiosInstance';
 import { seriesActionTypes } from './series.types';
+const { REACT_APP_API_KEY } = process.env;
 
+
+async function mapActorsToTV(id){
+	//console.log(id)
+	const castResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${REACT_APP_API_KEY}`);
+    if(!castResponse.ok){
+		return []
+	}
+    const cast = await castResponse.json();
+	return cast.cast
+}
+	
 // Netflix
 export const fetchNetflixSeriesRequest = () => ({
     type: seriesActionTypes.FETCH_NETFLIX_SERIES_REQUEST
@@ -22,11 +34,12 @@ export const fetchNetflixSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchNetflixSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const netflixSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const netflixSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchNetflixSeriesSuccess(netflixSeries, isPage));
                 } else dispatch(fetchNetflixSeriesSuccess(netflixSeries));
@@ -60,11 +73,12 @@ export const fetchActionAdventureSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchActionAdventureSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const actionAdventureSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const actionAdventureSeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchActionAdventureSeriesSuccess(actionAdventureSeries, isPage));
                 } else dispatch(fetchActionAdventureSeriesSuccess(actionAdventureSeries));
@@ -98,11 +112,12 @@ export const fetchAnimationSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchAnimationSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const animationSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const animationSeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchAnimationSeriesSuccess(animationSeries, isPage));
                 } else dispatch(fetchAnimationSeriesSuccess(animationSeries));
@@ -136,11 +151,12 @@ export const fetchComedySeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchComedySeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const comedySeries = res.data.results.map(el => ({
+            .then(async res => {
+                const comedySeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchComedySeriesSuccess(comedySeries, isPage));
                 } else dispatch(fetchComedySeriesSuccess(comedySeries));
@@ -174,11 +190,12 @@ export const fetchCrimeSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchCrimeSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const crimeSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const crimeSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchCrimeSeriesSuccess(crimeSeries, isPage));
                 } else dispatch(fetchCrimeSeriesSuccess(crimeSeries));
@@ -212,11 +229,12 @@ export const fetchDocumentarySeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchDocumentarySeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const documentarySeries = res.data.results.map(el => ({
+            .then(async res => {
+                const documentarySeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchDocumentarySeriesSuccess(documentarySeries, isPage));
                 } else dispatch(fetchDocumentarySeriesSuccess(documentarySeries));
@@ -250,11 +268,12 @@ export const fetchFamilySeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchFamilySeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const familySeries = res.data.results.map(el => ({
+            .then(async res => {
+                const familySeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchFamilySeriesSuccess(familySeries, isPage));
                 } else dispatch(fetchFamilySeriesSuccess(familySeries));
@@ -288,11 +307,12 @@ export const fetchKidsSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchKidsSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const kidsSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const kidsSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchKidsSeriesSuccess(kidsSeries, isPage));
                 } else dispatch(fetchKidsSeriesSuccess(kidsSeries));
@@ -326,11 +346,12 @@ export const fetchSciFiFantasySeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchSciFiFantasySeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const sciFiFantasySeries = res.data.results.map(el => ({
+            .then(async res => {
+                const sciFiFantasySeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchSciFiFantasySeriesSuccess(sciFiFantasySeries, isPage));
                 } else dispatch(fetchSciFiFantasySeriesSuccess(sciFiFantasySeries));
@@ -364,11 +385,12 @@ export const fetchTrendingSeriesAsync = (fetchUrl, isPage) => {
     return dispatch => {
         dispatch(fetchTrendingSeriesRequest());
         axios.get(fetchUrl)
-            .then(res => {
-                const trendingSeries = res.data.results.map(el => ({
+            .then(async res => {
+                const trendingSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
-                    isFavourite: false
-                }));
+                    isFavourite: false,
+                    actors:await mapActorsToTV(el.id)
+                })));
                 if (isPage) {
                     dispatch(fetchTrendingSeriesSuccess(trendingSeries, isPage));
                 } else dispatch(fetchTrendingSeriesSuccess(trendingSeries));

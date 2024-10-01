@@ -187,7 +187,7 @@ const Navbar = () => {
 										className="Navbar__navprofile--content-wrp"
 										ref={profileNavRef}
 									>
-										{/*Signs out curretn user*/}
+										{/*Signs out current user*/}
 										{currentUser && (
 											<li
 												className="Navbar__navlinks--link"

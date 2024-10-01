@@ -2,7 +2,7 @@ import "./credits.scss"
 import { motion } from "framer-motion";
 import { creditsFadeInUpVariants } from "../../motionUtils";
 import { GITHUB_AVATAR_URL, GITHUB_BASE_URL } from "../../requests";
-
+/**Credits is Card Component That Displays Creator of Fakeflix */
 const Credits = () => {
 	return (
 		<motion.footer
