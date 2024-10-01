@@ -77,7 +77,7 @@ export const fetchActionAdventureSeriesAsync = (fetchUrl, isPage) => {
                 const actionAdventureSeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchActionAdventureSeriesSuccess(actionAdventureSeries, isPage));
@@ -116,7 +116,7 @@ export const fetchAnimationSeriesAsync = (fetchUrl, isPage) => {
                 const animationSeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchAnimationSeriesSuccess(animationSeries, isPage));
@@ -155,7 +155,7 @@ export const fetchComedySeriesAsync = (fetchUrl, isPage) => {
                 const comedySeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchComedySeriesSuccess(comedySeries, isPage));
@@ -194,7 +194,7 @@ export const fetchCrimeSeriesAsync = (fetchUrl, isPage) => {
                 const crimeSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchCrimeSeriesSuccess(crimeSeries, isPage));
@@ -233,7 +233,7 @@ export const fetchDocumentarySeriesAsync = (fetchUrl, isPage) => {
                 const documentarySeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchDocumentarySeriesSuccess(documentarySeries, isPage));
@@ -272,7 +272,7 @@ export const fetchFamilySeriesAsync = (fetchUrl, isPage) => {
                 const familySeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchFamilySeriesSuccess(familySeries, isPage));
@@ -311,7 +311,7 @@ export const fetchKidsSeriesAsync = (fetchUrl, isPage) => {
                 const kidsSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchKidsSeriesSuccess(kidsSeries, isPage));
@@ -350,7 +350,7 @@ export const fetchSciFiFantasySeriesAsync = (fetchUrl, isPage) => {
                 const sciFiFantasySeries =await Promise.all( res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchSciFiFantasySeriesSuccess(sciFiFantasySeries, isPage));
@@ -389,7 +389,7 @@ export const fetchTrendingSeriesAsync = (fetchUrl, isPage) => {
                 const trendingSeries = await Promise.all(res.data.results.map(async el => ({
                     ...el,
                     isFavourite: false,
-                    actors:await mapActorsToTV(el.id)
+                    media_type:"tv"
                 })));
                 if (isPage) {
                     dispatch(fetchTrendingSeriesSuccess(trendingSeries, isPage));

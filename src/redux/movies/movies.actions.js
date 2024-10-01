@@ -1,6 +1,6 @@
 import axios from "../../axiosInstance";
 import { moviesActionTypes } from "./movies.types";
-const { REACT_APP_API_KEY } = process.env;
+//const { REACT_APP_API_KEY } = process.env;
 
 
 //Goal of this function is to use api that gets the actors for each movie in a list
@@ -8,6 +8,7 @@ const { REACT_APP_API_KEY } = process.env;
 /** Runs the API to get Actors for a specific movie
  * @param id : TMDB generates unique ids for shows/movie and you need to pass it to get the cast of specific movie/tvshow
  */
+/*
 async function mapActorsToMovie(id){
 	//console.log(id)
 	const castResponse = await fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${REACT_APP_API_KEY}`);
@@ -17,8 +18,20 @@ async function mapActorsToMovie(id){
     const cast = await castResponse.json();
 	
 	return cast.cast
+}*/
+/*
+async function mapActorsToTV(id){
+	//console.log(id)
+	const castResponse = await fetch(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${REACT_APP_API_KEY}`);
+    if(!castResponse.ok){
+		return []
+	}
+    const cast = await castResponse.json();
+	return cast.cast
 }
-	
+	*/
+
+
 // Action
 export const fetchActionMoviesRequest = () => ({
 	type: moviesActionTypes.FETCH_ACTION_MOVIES_REQUEST,
@@ -45,11 +58,11 @@ export const fetchActionMoviesAsync = (fetchUrl, isPage) => {
 		dispatch(fetchActionMoviesRequest());
 		axios
 			.get(fetchUrl)
-			.then(async res => {
-				const actionMovies = await Promise.all(res.data.results.map(async el => ({
+			.then( res => {
+				const actionMovies = (res.data.results.map(el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id),
+					media_type:"movie"
 				})));
 				if (isPage) {
 					dispatch(fetchActionMoviesSuccess(actionMovies, isPage));
@@ -88,7 +101,7 @@ export const fetchAdventureMoviesAsync = (fetchUrl, isPage) => {
 				const adventureMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchAdventureMoviesSuccess(adventureMovies, isPage));
@@ -127,7 +140,7 @@ export const fetchAnimationMoviesAsync = (fetchUrl, isPage) => {
 				const animationMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchAnimationMoviesSuccess(animationMovies, isPage));
@@ -166,7 +179,7 @@ export const fetchComedyMoviesAsync = (fetchUrl, isPage) => {
 				const comedyMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchComedyMoviesSuccess(comedyMovies, isPage));
@@ -205,7 +218,7 @@ export const fetchHorrorMoviesAsync = (fetchUrl, isPage) => {
 				const horrorMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchHorrorMoviesSuccess(horrorMovies, isPage));
@@ -244,7 +257,7 @@ export const fetchNetflixMoviesAsync = (fetchUrl, isPage) => {
 				const netflixMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"tv"
 				})));
                 if (isPage) {
                     dispatch(fetchNetflixMoviesSuccess(netflixMovies, isPage));
@@ -322,7 +335,7 @@ export const fetchTopRatedMoviesAsync = (fetchUrl, isPage) => {
 				const topRatedMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchTopRatedMoviesSuccess(topRatedMovies, isPage));
@@ -361,7 +374,7 @@ export const fetchTrendingMoviesAsync = (fetchUrl, isPage) => {
 				const trendingMovies =await Promise.all (res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchTrendingMoviesSuccess(trendingMovies, isPage));
@@ -400,7 +413,7 @@ export const fetchUpcomingMoviesAsync = (fetchUrl, isPage) => {
 				const upcomingMovies = await Promise.all(res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchUpcomingMoviesSuccess(upcomingMovies, isPage));
@@ -439,7 +452,7 @@ export const fetchLatestMoviesAsync = (fetchUrl, isPage) => {
 				const latestMovies = await Promise.all( res.data.results.map(async el => ({
 					...el,
 					isFavourite: false,
-					actors:await mapActorsToMovie(el.id)
+					media_type:"movie"
 				})));
                 if (isPage) {
                     dispatch(fetchLatestMoviesSuccess(latestMovies, isPage));

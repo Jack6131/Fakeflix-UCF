@@ -1,5 +1,5 @@
 import './detailModal.scss'
-import { useRef } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"
 import { staggerOne, modalOverlayVariants, modalVariants, modalFadeInUpVariants } from "../../motionUtils";
@@ -10,21 +10,45 @@ import { BASE_IMG_URL, FALLBACK_IMG_URL } from "../../requests";
 import { VscChromeClose } from "react-icons/vsc";
 import { capitalizeFirstLetter, dateToYearOnly } from "../../utils";
 import { FaMinus, FaPlay, FaPlus } from "react-icons/fa";
+
 import { addToFavourites, removeFromFavourites } from "../../redux/favourites/favourites.actions";
 import useOutsideClick from "../../hooks/useOutsideClick";
+const { REACT_APP_API_KEY } = process.env;
+
+async function mapActorsToTVOrMovie(media_type,id){
+	//console.log(id)
+	const castResponse = await fetch(`https://api.themoviedb.org/3/${media_type}/${id}/credits?api_key=${REACT_APP_API_KEY}`);
+    if(!castResponse.ok){
+		return []
+	}
+    const cast = await castResponse.json();
+	return cast.cast.slice(0,4)
+}
 
 const DetailModal = () => {
 
 	const dispatch = useDispatch();
 	const modalClosed = useSelector(selectModalState);
 	const modalContent = useSelector(selectModalContent);
+	const [actors,setActors]= useState('Loading')
 	const handleModalClose = () => dispatch(hideModalDetail());
-	const { overview, fallbackTitle, backdrop_path, release_date, first_air_date, vote_average, original_language, adult, genresConverted, isFavourite,actors} = modalContent;
+	const { overview, fallbackTitle, backdrop_path, release_date, first_air_date, vote_average, original_language, adult, genresConverted, isFavourite,media_type,id} = modalContent;
 	const joinedGenres = genresConverted ? genresConverted.join(', ') : "Not available";
 
-	//Maps the first 3 Actors in the Movie/TV Show to be displayed on modal
-	const actorNames = (actors && actors.length > 0) ? actors.slice(0, 3).map(actor => actor.name).join(', ') : 'No actors available';
+	//Maps the first 4 Actors in the Movie/TV Show to be displayed on modal
 
+	useEffect(()=>{
+		async function generateActorList(){
+		const listOfActors=await mapActorsToTVOrMovie(media_type,id)
+		const firstFewActors =(actors && actors.length > 0) 
+		? listOfActors.map(actor => actor.name).join(', ') 
+		: 'No actors available';
+		setActors(firstFewActors)
+		}
+		generateActorList()
+
+		
+	})
 
 	const maturityRating = adult === undefined ? "Not available" : adult ? "Suitable for adults only" : "Suitable for all ages";
 	const reducedDate = release_date ? dateToYearOnly(release_date) : first_air_date ? dateToYearOnly(first_air_date) : "Not Available";
@@ -128,8 +152,9 @@ const DetailModal = () => {
 								</motion.div>
 								<motion.div variants={modalFadeInUpVariants} className="Modal__info--row">
 									<span className='Modal__info--row-label'>Actors: </span>
-									<span className="Modal__info--row-description">{actorNames}</span>
+									<span className="Modal__info--row-description">{actors}</span>
 								</motion.div>
+								
 								
 							
 							</motion.div>
