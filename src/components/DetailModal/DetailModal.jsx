@@ -1,5 +1,5 @@
 import './detailModal.scss'
-import { useEffect, useRef,useState } from 'react';
+import { useCallback, useEffect, useRef,useState } from 'react';
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"
 import { staggerOne, modalOverlayVariants, modalVariants, modalFadeInUpVariants } from "../../motionUtils";
@@ -32,6 +32,7 @@ async function mapActorsToTVOrMovie(media_type,id){
 		return []
 	}
     const cast = await castResponse.json();
+	console.log(cast.cast)
 	return cast.cast.slice(0,4)
 }
 
@@ -45,7 +46,7 @@ const DetailModal = () => {
 	const [actors,setActors]= useState('Loading')
 
 	const [doneLoading,setDoneLoading]=useState(false)
-	const handleModalClose = () => dispatch(hideModalDetail());
+	const handleModalClose = useCallback(() => dispatch(hideModalDetail()),[dispatch]);
 	const { overview, fallbackTitle, backdrop_path, release_date, first_air_date, vote_average, original_language, adult, genresConverted, isFavourite,media_type,id} = modalContent;
 	const joinedGenres = genresConverted ? genresConverted.join(', ') : "Not available";
 
@@ -57,8 +58,16 @@ const DetailModal = () => {
 		async function generateActorList(){
 			const listOfActors=await mapActorsToTVOrMovie(media_type,id)
 			
+
+			//Here we map the names of the actors to a hyper link to reroute to the person page with the necessary information
 			const firstFewActors =(actors && listOfActors.length >0) 
-				? listOfActors.map(actor => actor.name).join(', ') 
+				? listOfActors.map((actor,index) => (
+					<Link to={`/person/${actor.name}/${actor.id}`} key={actor.id} style={{ color: 'white', textDecoration: 'none' }} onClick={()=>{
+						handleModalClose()
+					}}>
+						<span>{actor.name}{index < listOfActors.length - 1 && ', '} </span>
+					</Link>)
+				)
 				: 'No actors available';
 		
 			setActors(firstFewActors)
@@ -76,7 +85,7 @@ const DetailModal = () => {
 			setDoneLoading(false)
 		}
 		
-	},[modalClosed,setDoneLoading,doneLoading,id,media_type,actors])
+	},[modalClosed,setDoneLoading,doneLoading,id,media_type,actors,handleModalClose])
 
 	const maturityRating = adult === undefined ? "Not available" : adult ? "Suitable for adults only" : "Suitable for all ages";
 	const reducedDate = release_date ? dateToYearOnly(release_date) : first_air_date ? dateToYearOnly(first_air_date) : "Not Available";

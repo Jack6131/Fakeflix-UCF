@@ -11,6 +11,7 @@ import MyList from './pages/MyList/MyList';
 import Auth from "./pages/Auth/Auth";
 import Search from "./pages/Search/Search";
 import Category from "./pages/Category/Category";
+import People from "./pages/People/People";
 import DetailModal from "./components/DetailModal/DetailModal";
 import SplashAnimation from "./components/SplashAnimation/SplashAnimation";
 import PlayAnimation from "./components/PlayAnimation/PlayAnimation";
@@ -71,6 +72,13 @@ const App = () => {
                         path="/browse/:categoryName"
                         render={(props) => currentUser
                             ? <Category {...props} />
+                            : <Redirect to="/login" />}
+                    />
+                      <Route
+                        exact
+                        path="/person/:actorname/:actorID"
+                        render={(props) => currentUser
+                            ? <People {...props}></People>
                             : <Redirect to="/login" />}
                     />
                     <Route
