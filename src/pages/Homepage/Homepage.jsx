@@ -6,6 +6,7 @@ import { useRetrieveData } from "../../hooks/useRetrieveData";
 import { motion } from "framer-motion";
 import { defaultPageFadeInVariants } from "../../motionUtils";
 
+
 const Homepage = () => {
     const rows = useRetrieveData('movies');
 

@@ -9,6 +9,7 @@ import { selectFavouritesList } from "../../redux/favourites/favourites.selector
 const MyList = () => {
     const favs = useSelector(selectFavouritesList);
 
+    
     return (
         <motion.div
             className="MyList"
@@ -17,6 +18,7 @@ const MyList = () => {
             animate="animate"
             exit="exit"
         >
+
             {favs && favs.length > 0 && (
                 <h2 className="MyList__title">My List</h2>
             )}

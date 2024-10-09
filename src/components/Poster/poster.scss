@@ -3,7 +3,7 @@
 
 .Poster {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     display: inline-block;
     white-space: normal;
     vertical-align: top;
@@ -240,6 +240,54 @@
 
                 &:last-child:after {
                     display: none;
+                }
+            }
+        }
+    }
+
+    &__folders {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &--content {
+            display: block;
+            pointer-events: none;
+            position: absolute;
+            opacity: 0;
+            top: 100px;
+            right: 0;
+            padding: 10px 0;
+            min-width: auto;
+            white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.5);
+            background-color: rgba(0,0,0,0.9);
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            transition: all 0.2s ease-out;
+
+            @include mq(sm) {
+                min-width: 180px;
+            }
+
+            &.active {
+                opacity: 1;
+                top: 55px;
+                pointer-events: all;
+            }
+            
+            li {
+                color: $white;
+                padding: 5px 15px;
+                text-decoration: none;
+                display: block;
+        
+                &:hover {
+                    text-decoration: underline;
+                }
+                a {
+                    display: block;
                 }
             }
         }

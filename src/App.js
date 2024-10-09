@@ -16,6 +16,7 @@ import SplashAnimation from "./components/SplashAnimation/SplashAnimation";
 import PlayAnimation from "./components/PlayAnimation/PlayAnimation";
 import { selectCurrentUser } from './redux/auth/auth.selectors';
 import { selectSearchResults } from "./redux/search/search.selectors";
+//import { getUserFolders } from "./firebase/firebaseUtils";
 import { checkUserSession } from "./redux/auth/auth.actions";
 
 const App = () => {
@@ -24,6 +25,8 @@ const App = () => {
     const searchResults = useSelector(selectSearchResults);
     const dispatch = useDispatch();
     const location = useLocation();
+
+    //getUserFolders(currentUser);
 
     useEffect(() => {
         dispatch(checkUserSession());

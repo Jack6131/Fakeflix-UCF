@@ -26,6 +26,8 @@ export function* signInWithEmail({payload: { email, password }}) {
 	try {
 		const { user } = yield auth.signInWithEmailAndPassword(email, password);
 		yield getSnapshotFromUserAuth(user);
+		console.log(user);
+		console.log(user.id);
 	} catch (e) {
 		yield put(signInFailure(e.message));
 	}
