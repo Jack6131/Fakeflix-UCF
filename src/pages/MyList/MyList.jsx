@@ -5,10 +5,23 @@ import { motion } from "framer-motion";
 import { staggerHalf, defaultPageFadeInVariants } from "../../motionUtils";
 import { useSelector } from "react-redux"
 import { selectFavouritesList } from "../../redux/favourites/favourites.selectors"
+import { selectCurrentUser } from '../../redux/auth/auth.selectors';
+import { getUserFolders } from "../../firebase/firebaseUtils";
+import { useState, useEffect } from "react";
 
 const MyList = () => {
     const favs = useSelector(selectFavouritesList);
+    const currentUser = useSelector(selectCurrentUser);
+    const [userFolders, setUserFolders] = useState([]);
 
+    useEffect (() => {
+        async function getFolders () {
+            const folders = await getUserFolders(currentUser);
+            setUserFolders(folders);
+        }
+
+        getFolders();
+    }, [currentUser]);
     
     return (
         <motion.div
@@ -35,6 +48,7 @@ const MyList = () => {
                             key={result.id}
                             item={result}
                             {...result}
+                            folders={userFolders}
                         />
                     ))
                     : (

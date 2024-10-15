@@ -10,24 +10,19 @@ import { addToFavourites, removeFromFavourites } from "../../redux/favourites/fa
 import { Link } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { useState, useRef } from 'react';
-import { useSelector } from "react-redux"
-import { getUserFolders } from "../../firebase/firebaseUtils";
-import { selectCurrentUser } from '../../redux/auth/auth.selectors';
 
 const Poster = result => {
     const { item, item: { title, original_name, original_title, name, genre_ids, backdrop_path }, isFavourite } = result;
     let fallbackTitle = title || original_title || name || original_name;
     const genresConverted = useGenreConversion(genre_ids);
     const dispatch = useDispatch();
+    const folders = result.folders;
 
     // newly added: 
     //      - useState to set whether the folder list should be visible or not
     //      - folder list ref to close the folder list when an outside click happens
-    //      - currentUser to know which user to search for folders in database for
     const [folderList, setFolderList] = useState(false);
-    let userFolders = [];
     const folderListRef = useRef();
-    const currentUser = useSelector(selectCurrentUser);
 
     const handleAdd = event => {
         event.stopPropagation();
@@ -50,13 +45,10 @@ const Poster = result => {
 		if (folderList) setFolderList(false);
 	});
 
-    /** this function takes in a folder object and an event input (maybe? ouch).
+    /** this function takes in a folder object as a parameter.
      *  currently, it just prints the name of the folder and the message "you did it!"
      *  to the console, but it is meant to be updated to search through the database
      *  and add the JSON information to the relevant folder belonging to the user.
-     * 
-     * NOTE: TODO: did not get far enough to check if this function is actually accessing
-     * the folder while simultaneously processing the event correctly. 
      * 
      * i tried a few different formats that gave errors and this is the one that didn't but
      * obviously that doesn't necessarily mean working. will try again later.
@@ -65,11 +57,9 @@ const Poster = result => {
      * 
     */
     const handleAddToFolder = (folder) => {
-        event => {
-            event.stopPropagation();
-            console.log(folder.folderName);
-            console.log("you did it!");
-        }
+        //TODO: actual code to add to folder...
+        console.log(folder.folderName);
+        console.log("you did it!");
     };
 
     /** this function takes in an event as the parameter. it stops the propagation of the
@@ -80,8 +70,6 @@ const Poster = result => {
      */
     async function handleFolderListOpen (event) {
         event.stopPropagation();
-        userFolders = await getUserFolders(currentUser);
-        console.log(userFolders);
         setFolderList(true);
     }
 
@@ -154,10 +142,10 @@ const Poster = result => {
                                     <li>
 										<strong>Add to folder</strong>
 									</li>
-                                    <li>no one loves me</li>
-                                    { userFolders.map((userFolder, i) => 
-                                        <li key={i} onClick={handleAddToFolder(userFolder)}>
-                                            {userFolder.folderName}
+                                    { folders.map((folder, i) => 
+                                        <li key={i} onClick={(event) => {event.stopPropagation;
+                                         handleAddToFolder(folder)}}>
+                                            {folder.folderName}
                                         </li>
                                     )}
 								</ul>
