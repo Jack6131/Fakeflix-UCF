@@ -6,14 +6,13 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 import { motion } from "framer-motion";
 import { navbarFadeInVariants } from "../../motionUtils";
 import { LOGO_URL, MOBILE_LOGO_URL, PROFILE_PIC_URL } from "../../requests";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown,FaFolder } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import Searchbar from "../Searchbar/Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/auth/auth.selectors";
 import { signOutStart } from "../../redux/auth/auth.actions";
-
-
+import { folderShowModalDetail } from "../../redux/foldermodal/foldermodal.actions";
 /** 
  * Navbar is a component for navigating between pages on FakeFlix. 
  * It includes links to different sections, a search bar, and the user profile with sign-out functionality.
@@ -24,14 +23,14 @@ const Navbar = () => {
 	const isScrolled = useScroll(70);
 	//way to keep state of the dropdown navbar menu if its on or off
 	const [genresNav, setGenresNav] = useState(false);
-
+	
 	//way to keep state of the dropdown signout menu if its on or off
 	const [profileNav, setProfileNav] = useState(false);
 	const genresNavRef = useRef();
 	const profileNavRef = useRef();
 	const currentUser = useSelector(selectCurrentUser);
 	const dispatch = useDispatch();
-
+	
 
 	//if discover dropdown menu is displayed and you click out side of it  will close
 	useOutsideClick(genresNavRef, () => {
@@ -103,6 +102,12 @@ const Navbar = () => {
 								My list
 							</NavLink>
 						</li>
+						<li className="Navbar__navlinks--link">
+							{/* Routes to the Folder Page Found in src/pages/Folder/Folder.jsx*/}
+							<NavLink to="/folders" activeClassName="activeNavLink">
+								Folder
+							</NavLink>
+						</li>
 					</ul>
 				) : (
 					<div
@@ -151,16 +156,27 @@ const Navbar = () => {
 											My list
 										</NavLink>
 									</li>
+									<li className="Navbar__navlinks--link">
+										{/* Routes to the Folder Page Found in src/pages/Folder/Folder.jsx*/}
+										<NavLink to="/folders" activeClassName="activeNavLink">
+											Folder
+										</NavLink>
+									</li>
 								</ul>
 							)}
 						</div>
 					</div>
 				)}
 				<div className="Navbar__secondarynav">
-					
+			
 					<div className="Navbar__navitem">
 						{/* Searchbar component for handling searches shows a magnifying glass icon*/}
 						<Searchbar />
+					</div>
+
+					<div className="Navbar--padding">
+						<FaFolder size="1.5em" onClick={()=>dispatch(folderShowModalDetail())}/>  {/* Folder icon */}
+						
 					</div>
 					<div className="Navbar__navitem">
 

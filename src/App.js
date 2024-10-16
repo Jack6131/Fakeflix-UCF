@@ -18,6 +18,8 @@ import PlayAnimation from "./components/PlayAnimation/PlayAnimation";
 import { selectCurrentUser } from './redux/auth/auth.selectors';
 import { selectSearchResults } from "./redux/search/search.selectors";
 import { checkUserSession } from "./redux/auth/auth.actions";
+import FolderPage from "./pages/Folder/Folder";
+import FolderModal from "./components/AddFolderModal/FolderModal";
 
 const App = () => {
 
@@ -36,6 +38,7 @@ const App = () => {
                 <>
                     <Navbar />
                     <DetailModal />
+                    <FolderModal />
                 </>
             )}
             <AnimatePresence exitBeforeEnter>
@@ -121,6 +124,11 @@ const App = () => {
                         exact
                         path="/mylist"
                         render={() => currentUser ? <MyList /> : <Redirect to="/login" />}
+                    />
+                     <Route
+                        exact
+                        path="/folders"
+                        render={() => currentUser ? <FolderPage/>:<Redirect to="/login"/>  }
                     />
                     <Route
                         exact

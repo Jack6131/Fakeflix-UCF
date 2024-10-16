@@ -10,7 +10,7 @@ import { BASE_IMG_URL, FALLBACK_IMG_URL } from "../../requests";
 import { VscChromeClose } from "react-icons/vsc";
 import { capitalizeFirstLetter, dateToYearOnly } from "../../utils";
 import { FaMinus, FaPlay, FaPlus } from "react-icons/fa";
-
+//import { createNewFolder } from "../../firebase/firebaseUtils";
 import { addToFavourites, removeFromFavourites } from "../../redux/favourites/favourites.actions";
 import useOutsideClick from "../../hooks/useOutsideClick";
 const { REACT_APP_API_KEY } = process.env;
@@ -76,6 +76,7 @@ const DetailModal = () => {
 		if(!modalClosed){
 			if(!doneLoading){
 				generateActorList()
+				//createNewFolder({name:"Hello"})
 				setDoneLoading(!doneLoading)
 			}
 		}

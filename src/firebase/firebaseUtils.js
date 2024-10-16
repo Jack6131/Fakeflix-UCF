@@ -1,6 +1,9 @@
 import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 import "firebase/compat/auth"
+import { getAuth } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore"; 
+
 
 const { REACT_APP_FIREBASE_API_KEY, REACT_APP_FIREBASE_AUTH_DOMAIN, REACT_APP_FIREBASE_PROJECT_ID, REACT_APP_FIREBASE_STORAGE_BUCKET, REACT_APP_FIREBASE_MESSAGING_SENDER_ID, REACT_APP_FIREBASE_APP_ID, REACT_APP_FIREBASE_MEASUREMEMT_ID } = process.env;
 
@@ -48,6 +51,31 @@ export const getCurrentUser = () => {
         }, reject);
     });
 }
+export async function createNewFolder(newFolderData) {
+    // Get the currently signed-in user
+    const db = getFirestore();
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+        const userId = user.uid;  // Dynamically get the user ID
+        
+        // Reference to the 'folders' collection under the user
+        const foldersCollectionRef = collection(db, 'users', userId, 'folders');
+        
+        try {
+            // Add a new document with the provided data
+            const docRef = await addDoc(foldersCollectionRef, newFolderData);
+            console.log("Document written with ID: ", docRef.id);  // Log the new document's ID
+            return docRef.id;
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+    } else {
+        console.log("No user is signed in");
+    }
+}
+
 
 // Firebase web app init
 firebase.initializeApp(firebaseConfig)

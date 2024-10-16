@@ -8,6 +8,7 @@ import series from "./series";
 import favourites from "./favourites";
 import search from "./search";
 import detailModal from "./modal";
+import folderModal from "./foldermodal"
 import { persontvmovieReducer } from "./persontvmovie";
 
 const persistConfig = {
@@ -23,7 +24,9 @@ const rootReducer = combineReducers({
     series,
     favourites,
     detailModal,
-    persontvmovieReducer
+    persontvmovieReducer,
+    folderModal
+    
     
 })
 

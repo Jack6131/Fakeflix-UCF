@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 
 
-/**Is basically a copy of the category page except this handles the mapping of movies and tv shows for a specific person */
+/** Is basically a copy of the category page except this handles the mapping of movies and tv shows for a specific person */
 const People = ({ match }) => {
     
     const { url } = match;
@@ -25,6 +25,7 @@ const People = ({ match }) => {
     
     useEffect(() => {
         if (personID) {
+            
             dispatch(fetchPersonResultsAsync(personID));
         }
     }, [dispatch, personID]);
