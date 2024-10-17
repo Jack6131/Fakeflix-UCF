@@ -26,6 +26,7 @@ export function* signInWithEmail({payload: { email, password }}) {
 	try {
 		const { user } = yield auth.signInWithEmailAndPassword(email, password);
 		yield getSnapshotFromUserAuth(user);
+		
 	} catch (e) {
 		yield put(signInFailure(e.message));
 	}
@@ -43,6 +44,7 @@ export function* signInAnonymously() {
 export function* checkIfUserIsAuthenticated(){
 	try {
 		const userAuth = yield getCurrentUser();
+		console.log(userAuth)
 		if (!userAuth) return;
 		yield getSnapshotFromUserAuth(userAuth);
 	} catch (e) {

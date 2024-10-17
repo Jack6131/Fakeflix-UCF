@@ -1,6 +1,9 @@
 import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 import "firebase/compat/auth"
+import { getAuth } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore"; 
+
 
 import { getFirestore, collection, getDocs} from "firebase/firestore";
 
@@ -50,6 +53,31 @@ export const getCurrentUser = () => {
         }, reject);
     });
 }
+export async function createNewFolder(newFolderData) {
+    // Get the currently signed-in user
+    const db = getFirestore();
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+        const userId = user.uid;  // Dynamically get the user ID
+        
+        // Reference to the 'folders' collection under the user
+        const foldersCollectionRef = collection(db, 'users', userId, 'folders');
+        
+        try {
+            // Add a new document with the provided data
+            const docRef = await addDoc(foldersCollectionRef, newFolderData);
+            console.log("Document written with ID: ", docRef.id);  // Log the new document's ID
+            return docRef.id;
+        } catch (error) {
+            console.error("Error adding document: ", error);
+        }
+    } else {
+        console.log("No user is signed in");
+    }
+}
+
 
 /** this function takes in 'user', an object containing information about the current user, and returns
  *  the user's associated folders from the database.
