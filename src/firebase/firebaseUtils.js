@@ -1,7 +1,8 @@
 import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 import "firebase/compat/auth"
-import { collection, query, where, getDocs } from "firebase/firestore";
+
+import { getFirestore, collection, getDocs} from "firebase/firestore";
 
 const { REACT_APP_FIREBASE_API_KEY, REACT_APP_FIREBASE_AUTH_DOMAIN, REACT_APP_FIREBASE_PROJECT_ID, REACT_APP_FIREBASE_STORAGE_BUCKET, REACT_APP_FIREBASE_MESSAGING_SENDER_ID, REACT_APP_FIREBASE_APP_ID, REACT_APP_FIREBASE_MEASUREMEMT_ID } = process.env;
 
@@ -58,20 +59,17 @@ export const getCurrentUser = () => {
 export const getUserFolders = async (user) => {
     if (!user) return;
 
+    // get database info, get ID from user, initialize empty folder array in which to store folders
+    const db = getFirestore();
+    const userId = user.id;
     let folderArray = [];
 
-    // query the database to retrieve all folders associated with the current user's ID
-    const foldersRef = collection(firestore, "folders");
-    const q = query(foldersRef, where("userID", "==", `${user.id}`));
+    // get reference to relevant database path
+    const foldersRef = collection(db, "users", userId, "folders");
 
-    // retrieves all objects from the filtered query, in this case the folders & their info
-    const querySnapshot = await getDocs(q);
-    
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        //console.log(doc.id, " => ", doc.data(), " also ", doc.data().folderName);
-        folderArray.push(doc.data());
-    });    
+    // retrieves all objects from the database collection, in this case the folders & their info
+    const snapshot = await getDocs(foldersRef);
+    snapshot.forEach((doc) => folderArray.push(doc.data()));
 
     return folderArray;
 }

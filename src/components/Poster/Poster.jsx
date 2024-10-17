@@ -58,7 +58,7 @@ const Poster = result => {
     */
     const handleAddToFolder = (folder) => {
         //TODO: actual code to add to folder...
-        console.log(folder.folderName);
+        console.log(folder.name);
         console.log("you did it!");
     };
 
@@ -145,7 +145,7 @@ const Poster = result => {
                                     { folders.map((folder, i) => 
                                         <li key={i} onClick={(event) => {event.stopPropagation;
                                          handleAddToFolder(folder)}}>
-                                            {folder.folderName}
+                                            {folder.name}
                                         </li>
                                     )}
 								</ul>
