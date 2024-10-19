@@ -2,10 +2,9 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/firestore"
 import "firebase/compat/auth"
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore"; 
+import { getFirestore, collection, addDoc,getDocs } from "firebase/firestore"; 
+import { fetchFoldersAsync } from "../redux/folders/folder.actions";
 
-
-import { getFirestore, collection, getDocs} from "firebase/firestore";
 
 const { REACT_APP_FIREBASE_API_KEY, REACT_APP_FIREBASE_AUTH_DOMAIN, REACT_APP_FIREBASE_PROJECT_ID, REACT_APP_FIREBASE_STORAGE_BUCKET, REACT_APP_FIREBASE_MESSAGING_SENDER_ID, REACT_APP_FIREBASE_APP_ID, REACT_APP_FIREBASE_MEASUREMEMT_ID } = process.env;
 
@@ -69,6 +68,7 @@ export async function createNewFolder(newFolderData) {
             // Add a new document with the provided data
             const docRef = await addDoc(foldersCollectionRef, newFolderData);
             console.log("Document written with ID: ", docRef.id);  // Log the new document's ID
+            fetchFoldersAsync()
             return docRef.id;
         } catch (error) {
             console.error("Error adding document: ", error);
@@ -84,23 +84,27 @@ export async function createNewFolder(newFolderData) {
  *  @param user: is an object containing the current user's information, including but not limited to display name,
  *               ID, and email.
  */
-export const getUserFolders = async (user) => {
+export const getUserFolders = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     if (!user) return;
 
     // get database info, get ID from user, initialize empty folder array in which to store folders
     const db = getFirestore();
-    const userId = user.id;
+    const userId = user.uid;
     let folderArray = [];
 
     // get reference to relevant database path
     const foldersRef = collection(db, "users", userId, "folders");
-
+   
     // retrieves all objects from the database collection, in this case the folders & their info
     const snapshot = await getDocs(foldersRef);
-    snapshot.forEach((doc) => folderArray.push(doc.data()));
+    snapshot.forEach((doc) => folderArray.push({id:doc.id,...doc.data()}));
+    console.log(+folderArray)
 
     return folderArray;
-}
+    } 
+
 
 // Firebase web app init
 firebase.initializeApp(firebaseConfig)

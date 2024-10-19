@@ -21,15 +21,18 @@ import { checkUserSession } from "./redux/auth/auth.actions";
 import FolderPage from "./pages/Folder/Folder";
 import FolderModal from "./components/AddFolderModal/FolderModal";
 
+
 const App = () => {
 
     const currentUser = useSelector(selectCurrentUser);
     const searchResults = useSelector(selectSearchResults);
     const dispatch = useDispatch();
     const location = useLocation();
-
+    
     useEffect(() => {
         dispatch(checkUserSession());
+        
+       
     }, [dispatch])
 
     return (

@@ -10,7 +10,7 @@ import search from "./search";
 import detailModal from "./modal";
 import folderModal from "./foldermodal"
 import { persontvmovieReducer } from "./persontvmovie";
-
+import folder from './folders'
 const persistConfig = {
     key: 'root',
     storage,
@@ -25,7 +25,8 @@ const rootReducer = combineReducers({
     favourites,
     detailModal,
     persontvmovieReducer,
-    folderModal
+    folderModal,
+    folder
     
     
 })

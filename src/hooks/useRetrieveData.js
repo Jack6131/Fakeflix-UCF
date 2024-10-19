@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { fetchMovieDataConfig, fetchPopularDataConfig, fetchSeriesDataConfig } from "../dataConfig";
+import { fetchFoldersAsync } from "../redux/folders/folder.actions";
 
 export const useRetrieveData = (type) => {
 
@@ -8,6 +9,7 @@ export const useRetrieveData = (type) => {
     const [data, setData] = useState(null)
 
     useEffect(() => {
+        
         let selectedConfigArray = null;
         switch (type) {
             case "movies":
@@ -35,7 +37,7 @@ export const useRetrieveData = (type) => {
             }
         })
         setData(rowsData)
-
+        dispatch(fetchFoldersAsync())
     }, [type, dispatch])
 
     return data

@@ -1,6 +1,8 @@
 import requests from "./requests";
 import * as movieSelectors from "./redux/movies/movies.selectors";
+
 import * as seriesSelectors from "./redux/series/series.selectors";
+
 import {
 	fetchActionMoviesAsync,
 	fetchAdventureMoviesAsync,
@@ -214,7 +216,8 @@ export const fetchSeriesDataConfig = [
 		title: "Sci-Fi & Fantasy",
 		genre: "scififantasy",
 		selector: seriesSelectors.selectSciFiFantasySeries,
-	},
+	}
+
 ];
 
 export const fetchPopularDataConfig = [
